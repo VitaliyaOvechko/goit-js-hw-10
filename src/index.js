@@ -5,37 +5,26 @@ import Notiflix from 'notiflix';
 
 const DEBOUNCE_DELAY = 300;
 
-
-// export default fetchCountries;
-
-// const URL = "https://restcountries.com/v3.1/name/peru";
-// const URL = "https://restcountries.com/v3.1/name/{name}";
-
-// function fetchCountries(name) {
-//     const URL = `https://restcountries.com/v3.1/name/${name}`;
-//     return fetch(URL)
-//         .then((response) => response.json());
-// }
-
 const refs = {
     textInput: document.getElementById('search-box'),
-    countryList: document.querySelector('country-list'),
-    countryInfo: document.querySelector('country-info'),
+    countryList: document.querySelector('.country-list'),
+    countryInfo: document.querySelector('.country-info'),
 }
 console.log(refs.textInput);
+console.log(refs.countryList);
+console.log(refs.countryInfo);
 
 refs.textInput.addEventListener("input", debounce(searchCountry, DEBOUNCE_DELAY));
 
 function searchCountry(event) {
     event.preventDefault();
-    // const value = refs.textInput.value.trim();
+
     const inputValue = event.target.value.trim();
+    resetInput();
+    if (!inputValue) return;
     console.log(inputValue);
 
-    fetchCountries(inputValue).then(console.log);
-    // fetchCountries(value).then(({apital}) =>
-    // { console.log(capital)});
-
+    // fetchCountries(inputValue).then(console.log);
 fetchCountries(inputValue)
     .then(data => {
         if (data.length > 10) {
@@ -43,17 +32,17 @@ fetchCountries(inputValue)
         }
         else if (data.length >= 2 & data.length <= 10) {
             createMarkupCountriesList(data);
+            // resetInput();
         }
         else {
-            createMarkupCountryInfo(data)
+            createMarkupCountryInfo(data);
+            // resetInput();
         }
     })
     .catch(() => {
-      Notiflix.Notify.failure('Oops, there is no country with that name');
+        Notiflix.Notify.failure('Oops, there is no country with that name');
+        // resetInput();
     })
-    // .finally(() => {
-    //     resetInput();
-    // })
 };
 
 function createMarkupCountriesList(country) {
@@ -63,14 +52,11 @@ function createMarkupCountriesList(country) {
     <h2 class="country-list-name">${name.official}</h2>
     </li>`;
     })
-    .join('')
+        .join('')
 
-    // return refs.countryList.insertAdjacentHTML('beforeend', markup);
-    // return refs.countryList.innerHTML= markup;
-
-    console.log('list');
-    console.log(markup);
-
+    return refs.countryList.insertAdjacentHTML("beforeend", markup);
+    // console.log('list');
+    // console.log(markup);
 }
 
     
@@ -78,21 +64,27 @@ function createMarkupCountryInfo(country) {
     const markup = country.map(({ name, capital, population, flags, languages }) => {
         return `<div class="country-wrap">
         <img class="country-list-img src="${flags.svg}" alt="Flag of ${name.official}" />
-        <h1 class="country-name"></h1>
+        <h1 class="country-name">${name.official}</h1>
         </div>
         <ul class="country-info">
-        <li class="country-capital">Capital: ${capital}</li>
-        <li class="country-population">Population: ${population}</li>
-        <li class="country-languages">Languages: ${Object.values(languages).join(', ')}</li>
+        <li class="country-capital">Capital:
+        <span class="capital-name">${capital}</span>
+        </li>
+        <li class="country-population">Population: 
+        <span class="population-number">${population}</span>
+        </li>
+        <li class="country-languages">Languages: 
+        <span class="languages-list">${Object.values(languages).join(', ')}</span>
+        </li>
         </ul>`;
     })
         .join('');
 
-    // return refs.countryInfo.insertAdjacentHTML('beforeend', markup);
-    
-    console.log(markup);
+    return refs.countryInfo.insertAdjacentHTML('beforeend', markup);
+    // console.log(markup);
 }
 
-function resetInput() { };
-
-// Якщо користувач повністю очищає поле пошуку, то HTTP-запит не виконується, а розмітка списку країн або інформації про країну зникає.
+function resetInput() { 
+    refs.countryList.innerHTML = '';
+    refs.countryInfo.innerHTML = '';
+};
