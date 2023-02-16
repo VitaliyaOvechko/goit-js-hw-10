@@ -10,9 +10,9 @@ const refs = {
     countryList: document.querySelector('.country-list'),
     countryInfo: document.querySelector('.country-info'),
 }
-console.log(refs.textInput);
-console.log(refs.countryList);
-console.log(refs.countryInfo);
+// console.log(refs.textInput);
+// console.log(refs.countryList);
+// console.log(refs.countryInfo);
 
 refs.textInput.addEventListener("input", debounce(searchCountry, DEBOUNCE_DELAY));
 
@@ -48,7 +48,8 @@ fetchCountries(inputValue)
 function createMarkupCountriesList(country) {
     const markup = country.map(({ flags, name }) => {
     return `<li class="country-list-item">
-    <img class="country-list-img src="${flags.svg}" alt="Flag of ${name.official}" />
+    <img class="country-list-img" src="${flags.svg}" 
+    alt="Flag of ${name.official}" width = "50"/>
     <h2 class="country-list-name">${name.official}</h2>
     </li>`;
     })
@@ -63,18 +64,19 @@ function createMarkupCountriesList(country) {
 function createMarkupCountryInfo(country) {
     const markup = country.map(({ name, capital, population, flags, languages }) => {
         return `<div class="country-wrap">
-        <img class="country-list-img src="${flags.svg}" alt="Flag of ${name.official}" />
+        <img class="country-list-img" src="${flags.svg}" 
+        alt="Flag of ${name.official}" width = "50"/>
         <h1 class="country-name">${name.official}</h1>
         </div>
         <ul class="country-info">
-        <li class="country-capital">Capital:
-        <span class="capital-name">${capital}</span>
+        <li class="country-item">Capital:
+        <span class="country-item-span">${capital}</span>
         </li>
-        <li class="country-population">Population: 
-        <span class="population-number">${population}</span>
+        <li class="country-item">Population: 
+        <span class="country-item-span">${population}</span>
         </li>
-        <li class="country-languages">Languages: 
-        <span class="languages-list">${Object.values(languages).join(', ')}</span>
+        <li class="country-item">Languages: 
+        <span class="country-item-span">${Object.values(languages).join(', ')}</span>
         </li>
         </ul>`;
     })

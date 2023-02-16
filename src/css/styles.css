@@ -26,3 +26,33 @@ body {
   width: 100px;
   display: block;
 } */
+
+.country-list, .country-info{
+  list-style: none;
+  padding-left: 0;
+}
+
+.country-list-item, .country-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.country-list-name{
+
+}
+
+.country-name{
+margin: 0;
+}
+
+.country-item {
+font-weight: bold;
+}
+.country-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.country-item-span {
+font-weight:normal;
+}
